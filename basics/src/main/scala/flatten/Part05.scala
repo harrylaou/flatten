@@ -8,7 +8,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 trait Part05 {
 
   // There's nothing special about the types you can use in a for-comprehension. The Scala compiler
-  // will happily desugar for you, and as long as the type you work with has the proper `map` and `flatMap`
+  // will happily de-sugar for you, and as long as the type you work with has the proper `map` and `flatMap`
   // methods where required, it will be fine.
 
   // For for-comprehensions with no `yield`, the last step gets desugared to `foreach`.

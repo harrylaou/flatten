@@ -3,7 +3,6 @@ package answers
 import flatten.Part14
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
-import scalaz.contrib.std.futureInstance
 import scalaz.Scalaz._
 import scalaz._
 

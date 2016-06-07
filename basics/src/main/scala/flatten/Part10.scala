@@ -44,5 +44,9 @@ trait Part10 {
 
   // Exercise: create a `Monad` instance for `Option`
 
-
+  val optionMonad1 = new Monad[Option] {
+    override def map[A, B](container: Option[A])(function: A => B) = container.map(function)
+    override def flatMap[A, B](container: Option[A])(function: A => Option[B]) = container.flatMap(function)
+    override def create[B](value: B) = Some(value)
+  }
 }

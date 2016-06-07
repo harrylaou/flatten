@@ -1,9 +1,11 @@
 package flatten
 
 import scalaz.OptionT
+
+import scalaz._
+import Scalaz._
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
-import scalaz.contrib.std.futureInstance
 
 /*
  * If you skipped parts 8 - 12, welcome back!
@@ -30,8 +32,6 @@ trait Part13 {
   // And to get back to the normal structure:
   val finalFutureOption: Future[Option[Int]] = finalOptionT.run
 
-
-
   // Back to our good old service methods, where some are now asynchronous: returning a Future.
   def getUserName(data: Map[String, String]): Option[String] = ???
   def getUser(name: String): Future[Option[User]] = ???
@@ -47,4 +47,17 @@ trait Part13 {
   // 2) Put all `Option[Future[A]]` into an Option Transformer, OptionT.
 
   // Exercise: Make a for-comprehension
+
+  def optionFT[A](option: Option[A]): OptionT[Future, A] = OptionT(Future.successful(option))
+
+  val a: OptionT[Future, Boolean] =
+    for {userName <- optionFT(getUserName(data))
+         user <- OptionT(getUser(userName))
+         email <- optionFT(Some(getEmail(user)))
+         validatedEmail <- optionFT(validateEmail(email))
+         sendEmail <- OptionT(sendEmail(validatedEmail))
+    } yield {
+      sendEmail
+    }
+
 }

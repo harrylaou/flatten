@@ -26,6 +26,15 @@ trait Part01 {
     }
   }
 
+  val res: Option[Boolean] =
+    for {userName <- getUserName(data)
+         user <- getUser(userName)
+         email = getEmail(user)
+         validatedEmail <- validateEmail(email)
+         sendEmail <- sendEmail(validatedEmail)} yield {
+      sendEmail
+    }
+
   // Exercise, rewrite the above as a for-comprehension
 }
 

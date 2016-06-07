@@ -1,9 +1,10 @@
 package flatten
 
-import scalaz.{ \/, \/- }
+import scalaz.{\/, \/-}
 import scalaz.syntax.std.option._
 
 trait Part04 {
+
   trait User
 
   // In practice, not all of your functions will always return the same type.
@@ -26,17 +27,33 @@ trait Part04 {
   // This is done with the method `toRightDisjunction`:
 
   Some(5).toRightDisjunction("Left side!") // == \/-(5)
-  None.toRightDisjunction("Left side!")    // == -\/("Left side!")
+  None.toRightDisjunction("Left side!") // == -\/("Left side!")
 
   // There's a symbolic method for this as well: \/>
-  Some(5) \/> "Left side!" // == \/-(5)
+  Some(5) \/> "Left side!"
+  // == \/-(5)
 
   // Exercise, write our usual program with a for-comprehension, using 'toRightDisjunction' or '\/>'
 
+  val res: \/[String, Boolean] =
+    for {userName <- getUserName(data)
+         user <- getUser(userName) \/> "bla"
+         email = getEmail(user)
+         validatedEmail <- validateEmail(email) \/> "bla"
+         sendEmail <- sendEmail(validatedEmail)} yield {
+      sendEmail
+    }
 
   // If you're entirely not interested in error messages, you can also decide to
   // 'downgrade' the \/ values to Option. There's a 'toOption' method on \/ for that.
 
   // Bonus exercise: write the program again, but now downgrading \/ to Option.
-
+  val res2: Option[Boolean] =
+    for {userName <- getUserName(data).toOption
+         user <- getUser(userName)
+         email = getEmail(user)
+         validatedEmail <- validateEmail(email)
+         sendEmail <- sendEmail(validatedEmail).toOption} yield {
+      sendEmail
+    }
 }
